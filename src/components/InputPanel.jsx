@@ -11,67 +11,69 @@ const prospects = [
 
 function InputPanel() {
   const { 
-    monthlyExpenses, 
-    setMonthlyExpenses,
-    yearsOfRetirement,
-    setYearsOfRetirement,
+    targetAmount, 
+    setTargetAmount,
+    targetYear,
+    setTargetYear,
     scenario,
     setScenario,
-    handleCalculate
+    handleCalculate,
+    hasCalculated
   } = useContext(CalculatorContext);
+
+  // Convert to millions for display
+  const millionsDisplay = (targetAmount / 1000000).toFixed(1);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     handleCalculate();
   };
 
+  const handleMillionsChange = (value) => {
+    setTargetAmount(value * 1000000);
+  };
+
   return (
     <div className="bg-white shadow rounded-lg p-6">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Deadline: {monthlyExpenses}
-          </label>
+      <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="text-lg flex items-center gap-2 flex-wrap">
+          <span className="text-gray-700">Quero me aposentar com</span>
+          <div className="inline-flex items-center">
+            <input
+              type="number"
+              value={millionsDisplay}
+              onChange={(e) => handleMillionsChange(Number(e.target.value))}
+              step="0.1"
+              min="0.1"
+              max="100"
+              className="w-16 p-1 border-2 border-blue-500 rounded text-center font-semibold focus:outline-none focus:border-blue-600"
+            />
+            <span className="ml-1 font-semibold">milhões</span>
+          </div>
+          <span className="text-gray-700">de dólares em</span>
           <input
-            type="range"
-            min="2026"
-            max="2090"
-            value={monthlyExpenses}
-            onChange={(e) => setMonthlyExpenses(parseInt(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+            type="number"
+            value={targetYear}
+            onChange={(e) => setTargetYear(Number(e.target.value))}
+            min={new Date().getFullYear() + 1}
+            max={2050}
+            className="w-20 p-1 border-2 border-blue-500 rounded text-center font-semibold focus:outline-none focus:border-blue-600"
           />
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Número Mágico: U$ {yearsOfRetirement}M
-          </label>
-          <input
-            type="range"
-            min="0.5"
-            max="100"
-            step="0.5"
-            value={yearsOfRetirement}
-            onChange={(e) => setYearsOfRetirement(parseFloat(e.target.value))}
-            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-          />
-        </div>
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Prospecto pro BTC
-          </label>
+        <div className="space-y-2">
+          <p className="text-sm text-gray-500">Meu prospecto pro Bitcoin é...</p>
           <div className="flex space-x-4">
             <button
               type="button"
-              onClick={() => setScenario('ultra-bullish')}
+              onClick={() => setScenario('ultraBullish')}
               className={`px-4 py-2 rounded ${
-                scenario === 'ultra-bullish' 
+                scenario === 'ultraBullish' 
                   ? 'bg-green-600 text-white' 
                   : 'bg-gray-200 text-gray-700'
               }`}
             >
-              Ultra Bullish
+              Ultra Bullish 🚀
             </button>
             <button
               type="button"
@@ -82,35 +84,33 @@ function InputPanel() {
                   : 'bg-gray-200 text-gray-700'
               }`}
             >
-              Bullish
+              Bullish 🐂
             </button>
             <button
               type="button"
-              onClick={() => setScenario('neutro')}
+              onClick={() => setScenario('neutral')}
               className={`px-4 py-2 rounded ${
-                scenario === 'neutro' 
+                scenario === 'neutral' 
                   ? 'bg-gray-600 text-white' 
                   : 'bg-gray-200 text-gray-700'
               }`}
             >
-              Neutro
+              Neutro 😮‍💨
             </button>
           </div>
         </div>
 
-        <motion.button
-          whileHover={{ scale: 1.02 }}
-          whileTap={{ scale: 0.98 }}
+        <button
           type="submit"
-          className="w-full py-3 px-6 text-white font-medium rounded-lg relative overflow-hidden"
-          style={{
-            background: "linear-gradient(-45deg, #FFA63D, #FF3D77, #338AFF, #3CF0C5)",
-            backgroundSize: "400% 400%",
-            animation: "gradient 15s ease infinite",
-          }}
+          className={`w-full py-2 px-4 rounded font-semibold transition-all duration-300 ${
+            hasCalculated
+              ? 'bg-gray-400 text-white cursor-default'
+              : 'animate-gradient bg-gradient-to-r from-purple-500 via-pink-500 via-red-500 via-yellow-500 via-green-500 via-blue-500 to-purple-500 text-white hover:shadow-lg background-animate hover:scale-[1.02]'
+          }`}
+          disabled={hasCalculated}
         >
-          Calcular
-        </motion.button>
+          Descubra 🔮
+        </button>
       </form>
     </div>
   );

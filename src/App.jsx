@@ -1,20 +1,22 @@
-import { CalculatorProvider } from './context/CalculatorContext';
 import InputPanel from './components/InputPanel';
 import ResultsPanel from './components/ResultsPanel';
+import AdPanel from './components/AdPanel';
+import { CalculatorProvider } from './context/CalculatorContext';
 
 function App() {
   return (
     <CalculatorProvider>
-      <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-3xl font-bold text-center text-gray-900 mb-8">
-            Quantos BTC Você Precisa pra Aposentar?
-          </h1>
-          <div className="space-y-8">
-            <InputPanel />
-            <ResultsPanel />
-          </div>
+      <div className="container mx-auto px-4 py-8 max-w-4xl">
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+          Quantos BTC Você Precisa pra se Aposentar? 🏖️
+        </h1>
+        <div className="border-2 border-gray-200 rounded-lg shadow-lg">
+          <InputPanel />
         </div>
+        <div className="mt-6 border-2 border-gray-200 rounded-lg shadow-lg">
+          <ResultsPanel />
+        </div>
+        <AdPanel />
       </div>
     </CalculatorProvider>
   );
